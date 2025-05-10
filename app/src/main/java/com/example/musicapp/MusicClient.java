@@ -8,6 +8,6 @@ import retrofit2.http.Query;
 
 public interface MusicClient {
     //base url https://api.jamendo.com/v3.0/tracks/
-    @GET
-    Call<MusicResponse> getResponse(@Query("client_id") String key,@Query("title") String title);
+    @GET("tracks/")
+    Call<MusicResponse> getResponse(@Query("client_id") String key,@Query("search") String title);
 }

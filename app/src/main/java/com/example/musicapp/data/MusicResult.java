@@ -1,8 +1,9 @@
 package com.example.musicapp.data;
 
 public class MusicResult {
-    public String title;
+    public String name;
     public float duration;
-    public String img_url;
-    public String down_url;
+    public String audio;
+    public String image;
+    public String audiodownload;
 }
