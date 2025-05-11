@@ -1,5 +1,7 @@
 package com.example.musicapp.ui;
 
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -16,6 +18,8 @@ import androidx.fragment.app.Fragment;
 import com.example.musicapp.databinding.FragmentMusicBinding;
 import com.google.android.material.slider.Slider;
 
+import java.io.IOException;
+
 public class MusicFragment extends Fragment {
     FragmentMusicBinding binding;
     Slider slider;
@@ -24,12 +28,22 @@ public class MusicFragment extends Fragment {
     Button download;
     TextView title;
     ToggleButton repeat;
+    MediaPlayer mediaPlayer;
+    String audioUrl, name;
     float progress=0;
-    boolean playing=false, isRepeating=false;
+    int duration;
+    boolean playing=false, isRepeating=false, isDownloadAllowed=false;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding=FragmentMusicBinding.inflate(inflater,container, false);
+        /*mediaPlayer=new MediaPlayer();
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        try {
+            mediaPlayer.setDataSource(audioUrl);
+        }catch (IOException e){
+            e.printStackTrace();
+        }*/
 
         slider=binding.slider;
         playBtn=binding.play;
@@ -39,7 +53,7 @@ public class MusicFragment extends Fragment {
         repeat=binding.repeat;
         repeat.setText(null);
         slider.setValue(0);
-        slider.setValueTo(5);
+        slider.setValueTo(60);
         slider.setStepSize(0.1f);
 
 
@@ -53,6 +67,7 @@ public class MusicFragment extends Fragment {
                     title.setText("Paused");
                 }
                 else {
+                    //playAudio();
                     handler.postDelayed(progressUpdater, 100);
                     playing=true;
                     title.setText("Playing");
@@ -65,7 +80,6 @@ public class MusicFragment extends Fragment {
                 if(v.isActivated()) {
                     isRepeating = false;
                     v.setActivated(false);
-
                 }
                 else {
                     isRepeating = true;
@@ -88,7 +102,8 @@ public class MusicFragment extends Fragment {
         @Override
         public void run() {
             progress+=1f;
-            if(progress<=100){
+            if(progress<=slider.getValueTo()){
+                Log.d("progress"," "+slider.getValue());
                 slider.setValue(progress);
                 handler.postDelayed(this,100);
             }
@@ -105,4 +120,16 @@ public class MusicFragment extends Fragment {
 
         }
     };
+    private void playAudio(){
+
+        try {
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+    private void pauseAudio(){
+        mediaPlayer.pause();
+    }
 }
