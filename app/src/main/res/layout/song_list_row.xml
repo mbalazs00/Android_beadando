@@ -9,34 +9,34 @@
     android:paddingRight="15dp"
     android:paddingBottom="15dp">
 
+    <Button
+        android:id="@+id/songPlayButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="play"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/songTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/songPlayButton"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Name of the song" />
 
     <TextView
         android:id="@+id/artistTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginBottom="5dp"
+        android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/songTextView"
-        app:layout_constraintTop_toBottomOf="@+id/songTextView"
-        tools:text="Artist"/>
-
-    <Button
-        android:id="@+id/songPlayButton"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginStart="275dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/songPlayButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Play" />
+        app:layout_constraintTop_toBottomOf="@+id/songTextView"
+        tools:text="Artist" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

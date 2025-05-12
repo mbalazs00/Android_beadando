@@ -4,7 +4,7 @@ public class MusicResult {
     public String name;
     public float duration;
     public String audio;
-    public String image;
+    public String album_image;
     public String audiodownload;
-    public String artist;
+    public String artist_name;
 }
