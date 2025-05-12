@@ -3,11 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/homeFragment"
-        android:title="Főoldal"
+        android:title="Home"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/SongListFragment"
+        android:title="Search"
         app:showAsAction="never"/>
     <item
         android:id="@+id/musicFragment"
-        android:title="Zene"
+        android:title="Song"
         app:showAsAction="never"/>
+
 
 </menu>

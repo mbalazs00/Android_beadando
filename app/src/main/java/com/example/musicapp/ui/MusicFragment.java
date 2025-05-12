@@ -105,4 +105,32 @@ public class MusicFragment extends Fragment {
 
         }
     };
+    @Override
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        Bundle args = getArguments();
+        if (args != null) {
+            String name = args.getString("name");
+            String artist = args.getString("artist_name");
+            float duration = args.getFloat("duration", 1f);
+            String audio = args.getString("audio");
+            String albumImage = args.getString("album_image");
+            String downloadUrl = args.getString("audiodownload");
+
+            title.setText(name + " - " + artist);
+
+            if (duration > 0f) {
+                slider.setEnabled(true);
+                slider.setValueFrom(0f);
+                slider.setValueTo(duration);
+                slider.setValue(0f);
+            } else {
+                slider.setEnabled(false);
+                Log.w("MusicFragment", "Duration error: " + duration);
+            }
+
+            //TODO lejátszás
+        }
+    }
 }
