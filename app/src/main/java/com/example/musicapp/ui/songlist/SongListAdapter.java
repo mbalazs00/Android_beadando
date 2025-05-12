@@ -18,9 +18,11 @@ import java.util.List;
 public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongViewHolder> {
 
     private List<MusicResult> songs;
+    private OnSongPlayClickListener listener;
 
-    public SongListAdapter(List<MusicResult> songs) {
+    public SongListAdapter(List<MusicResult> songs, OnSongPlayClickListener listener) {
         this.songs = songs;
+        this.listener = listener;
     }
 
     @NonNull
@@ -36,6 +38,12 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongVi
         MusicResult song = songs.get(position);
         holder.songTextView.setText(song.name);
         holder.artistTextView.setText(song.artist_name);
+
+        holder.playButton.setOnClickListener(v ->{
+            if(listener != null){
+                listener.onSongPlayClicked(song);
+            }
+        });
     }
 
     @Override
@@ -53,6 +61,10 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongVi
             artistTextView = itemView.findViewById(R.id.artistTextView);
             playButton = itemView.findViewById(R.id.songPlayButton);
         }
+    }
+
+    public interface OnSongPlayClickListener{
+        void onSongPlayClicked(MusicResult song);
     }
 }
 

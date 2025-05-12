@@ -9,6 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.NavHostController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,6 +19,7 @@ import com.example.musicapp.MusicClient;
 import com.example.musicapp.R;
 import com.example.musicapp.data.MusicResponse;
 import com.example.musicapp.data.MusicResult;
+import com.example.musicapp.ui.MusicFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +43,7 @@ public class SongListFragment extends Fragment {
         songRecyclerView = view.findViewById(R.id.songRecyclerView);
         songRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        adapter = new SongListAdapter(songList);
+        adapter = new SongListAdapter(songList, song -> openMusicFragment(song));
         songRecyclerView.setAdapter(adapter);
 
         EditText searchEditText = view.findViewById(R.id.searchEditText);
@@ -53,6 +57,19 @@ public class SongListFragment extends Fragment {
         });
         return view;
     }
+
+    private void openMusicFragment(MusicResult song){
+        NavController navController = NavHostFragment.findNavController(this);
+        Bundle bundle = new Bundle();
+        bundle.putString("name", song.name);
+        bundle.putString("artist_name", song.artist_name);
+        bundle.putString("duration", Float.toString(song.duration));
+        bundle.putString("audio", song.audio);
+        bundle.putString("album_image", song.album_image);
+        bundle.putString("audiodownload", song.audiodownload);
+        navController.navigate(R.id.musicFragment, bundle);
+    }
+
     private void searchSongs(String title){
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.jamendo.com/v3.0/")
