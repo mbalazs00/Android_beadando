@@ -6,4 +6,5 @@ public class MusicResult {
     public String audio;
     public String image;
     public String audiodownload;
+    public String artist;
 }
