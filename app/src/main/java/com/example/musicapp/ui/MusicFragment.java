@@ -24,6 +24,12 @@ import com.bumptech.glide.Glide;
 import com.example.musicapp.databinding.FragmentMusicBinding;
 import com.google.android.material.slider.Slider;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 import java.io.IOException;
 
 public class MusicFragment extends Fragment {
@@ -103,7 +109,49 @@ public class MusicFragment extends Fragment {
         download.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                manager.enqueue(request);
+                OkHttpClient client = new OkHttpClient.Builder()
+                        .followRedirects(false)
+                        .build();
+
+                Request redirectRequest = new Request.Builder()
+                        .url(downloadUrl)
+                        .build();
+
+                client.newCall(redirectRequest).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        if (response.isRedirect() || response.code() == 301 || response.code() == 302) {
+                            String realUrl = response.header("Location");
+
+                            DownloadManager.Request realRequest = new DownloadManager.Request(Uri.parse(realUrl));
+                            realRequest.setTitle("Downloading: " + name + " - " + artist);
+                            realRequest.setDescription("Downloading");
+                            realRequest.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                            realRequest.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, name + ".mp3");
+                            realRequest.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
+
+                            DownloadManager realManager = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
+                            realManager.enqueue(realRequest);
+                        } else if (response.isSuccessful()) {
+                            DownloadManager.Request fallbackRequest = new DownloadManager.Request(Uri.parse(downloadUrl));
+                            fallbackRequest.setTitle("Downloading: " + name + " - " + artist);
+                            fallbackRequest.setDescription("Downloading");
+                            fallbackRequest.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                            fallbackRequest.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, name + ".mp3");
+                            fallbackRequest.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
+
+                            DownloadManager fallbackManager = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
+                            fallbackManager.enqueue(fallbackRequest);
+                        } else {
+                            Log.e("Download", "Failed to download: " + response.code());
+                        }
+                    }
+                });
             }
         });
         return binding.getRoot();
