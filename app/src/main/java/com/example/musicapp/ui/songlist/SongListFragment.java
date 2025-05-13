@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.NavHostController;
@@ -37,7 +38,7 @@ public class SongListFragment extends Fragment {
     private List<MusicResult> songList = new ArrayList<>();
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle("Song List");
         View view = inflater.inflate(R.layout.fragment_song_list, container, false);
 
         songRecyclerView = view.findViewById(R.id.songRecyclerView);

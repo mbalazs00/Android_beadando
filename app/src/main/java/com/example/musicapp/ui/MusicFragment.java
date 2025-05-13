@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
@@ -52,7 +53,6 @@ public class MusicFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding=FragmentMusicBinding.inflate(inflater,container, false);
 
-
         slider=binding.slider;
         playBtn=binding.play;
         playBtn.setText(null);
@@ -64,6 +64,7 @@ public class MusicFragment extends Fragment {
         currTime=binding.currTime;
         album=binding.icon;
         slider.setStepSize(1f);
+        playBtn.setText(null);
 
         playBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,11 +74,13 @@ public class MusicFragment extends Fragment {
                     handler.postDelayed(progressUpdater, 1000);
                     playing=true;
                     mediaPlayer.start();
+                    playBtn.setText(null);
                 }
                 else {
                     handler.removeCallbacks(progressUpdater);
                     playing=false;
                     mediaPlayer.pause();
+                    playBtn.setText(null);
                 }
             }
         });
@@ -87,10 +90,14 @@ public class MusicFragment extends Fragment {
                 if(v.isActivated()) {
                     isRepeating = false;
                     v.setActivated(false);
+                    repeat.setText(null);
+                    mediaPlayer.setLooping(false);
                 }
                 else {
                     isRepeating = true;
                     v.setActivated(true);
+                    repeat.setText(null);
+                    mediaPlayer.setLooping(true);
                 }
 
             }
@@ -99,9 +106,7 @@ public class MusicFragment extends Fragment {
             @Override
             public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
                 if(fromUser){
-                    Log.d("helyek","progress: "+progress+" actual: "+mediaPlayer.getCurrentPosition());
                     progress=value;
-                    Log.d("progress",Math.round(progress)+"");
                     mediaPlayer.seekTo(Math.round(progress)*1000);
                 }
             }
@@ -170,8 +175,7 @@ public class MusicFragment extends Fragment {
                 slider.setValue(progress);
                 handler.postDelayed(this,1000);
                 currTime.setText(formatTime(0f));
-                if(!mediaPlayer.isPlaying())
-                    mediaPlayer.start();
+                Log.d("playing",mediaPlayer.isPlaying()+"");
             }
             else {
                 handler.removeCallbacks(this);
@@ -183,6 +187,7 @@ public class MusicFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        progress=0;
         Bundle args = getArguments();
         if (args != null) {
             name = args.getString("name");
@@ -192,6 +197,7 @@ public class MusicFragment extends Fragment {
             albumImage = args.getString("album_image");
             downloadUrl = args.getString("audiodownload");
 
+            ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle(name);
             title.setText(name + " - " + artist);
             Glide.with(getContext()).load(albumImage).into(album);
 
@@ -226,8 +232,6 @@ public class MusicFragment extends Fragment {
                     e.printStackTrace();
                 }
             }
-
-            //TODO lejátszás
         }
     }
     public String formatTime(float duration){
