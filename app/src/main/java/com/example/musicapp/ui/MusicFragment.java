@@ -53,8 +53,6 @@ public class MusicFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding=FragmentMusicBinding.inflate(inflater,container, false);
 
-
-
         slider=binding.slider;
         playBtn=binding.play;
         playBtn.setText(null);
@@ -66,6 +64,7 @@ public class MusicFragment extends Fragment {
         currTime=binding.currTime;
         album=binding.icon;
         slider.setStepSize(1f);
+        playBtn.setText(null);
 
         playBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,11 +74,13 @@ public class MusicFragment extends Fragment {
                     handler.postDelayed(progressUpdater, 1000);
                     playing=true;
                     mediaPlayer.start();
+                    playBtn.setText(null);
                 }
                 else {
                     handler.removeCallbacks(progressUpdater);
                     playing=false;
                     mediaPlayer.pause();
+                    playBtn.setText(null);
                 }
             }
         });
@@ -89,10 +90,12 @@ public class MusicFragment extends Fragment {
                 if(v.isActivated()) {
                     isRepeating = false;
                     v.setActivated(false);
+                    repeat.setText(null);
                 }
                 else {
                     isRepeating = true;
                     v.setActivated(true);
+                    repeat.setText(null);
                 }
 
             }
@@ -101,9 +104,7 @@ public class MusicFragment extends Fragment {
             @Override
             public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
                 if(fromUser){
-                    Log.d("helyek","progress: "+progress+" actual: "+mediaPlayer.getCurrentPosition());
                     progress=value;
-                    Log.d("progress",Math.round(progress)+"");
                     mediaPlayer.seekTo(Math.round(progress)*1000);
                 }
             }
@@ -229,8 +230,6 @@ public class MusicFragment extends Fragment {
                     e.printStackTrace();
                 }
             }
-
-            //TODO lejátszás
         }
     }
     public String formatTime(float duration){
