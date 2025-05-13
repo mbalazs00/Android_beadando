@@ -63,7 +63,7 @@ public class SongListFragment extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putString("name", song.name);
         bundle.putString("artist_name", song.artist_name);
-        bundle.putString("duration", Float.toString(song.duration));
+        bundle.putFloat("duration", song.duration);
         bundle.putString("audio", song.audio);
         bundle.putString("album_image", song.album_image);
         bundle.putString("audiodownload", song.audiodownload);
