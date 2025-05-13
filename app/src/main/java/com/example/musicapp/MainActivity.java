@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        url=findViewById(R.id.url);
 
         toolbar=findViewById(R.id.mainToolbar);
         setSupportActionBar(toolbar);
@@ -65,15 +64,7 @@ public class MainActivity extends AppCompatActivity {
         appBarConfiguration=new AppBarConfiguration.Builder(R.id.homeFragment,R.id.musicFragment).build();
 
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        url.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!playing)
-                    playAudio();
-                else
-                    playing=false;
-            }
-        });
+
 
     }
     @Override
@@ -96,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                 MusicResponse data=response.body();
 
                 audioUrl=data.results.get(0).audio;
-                url.setText(data.results.get(0).name);
+
             }
 
             @Override
@@ -115,17 +106,5 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.onNavDestinationSelected(item, navController)
                 || super.onOptionsItemSelected(item);
     }
-    private void playAudio(){
-        player= new MediaPlayer();
-        player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        try {
-            player.setDataSource(audioUrl);
-            player.prepare();
-            player.start();
-            playing=true;
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-        Toast.makeText(this, "Audio started playing..", Toast.LENGTH_SHORT).show();
-    }
+
 }
