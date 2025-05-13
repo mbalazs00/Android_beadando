@@ -91,11 +91,13 @@ public class MusicFragment extends Fragment {
                     isRepeating = false;
                     v.setActivated(false);
                     repeat.setText(null);
+                    mediaPlayer.setLooping(false);
                 }
                 else {
                     isRepeating = true;
                     v.setActivated(true);
                     repeat.setText(null);
+                    mediaPlayer.setLooping(true);
                 }
 
             }
@@ -173,8 +175,7 @@ public class MusicFragment extends Fragment {
                 slider.setValue(progress);
                 handler.postDelayed(this,1000);
                 currTime.setText(formatTime(0f));
-                if(!mediaPlayer.isPlaying())
-                    mediaPlayer.start();
+                Log.d("playing",mediaPlayer.isPlaying()+"");
             }
             else {
                 handler.removeCallbacks(this);
