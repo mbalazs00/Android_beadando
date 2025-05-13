@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
@@ -51,6 +52,7 @@ public class MusicFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding=FragmentMusicBinding.inflate(inflater,container, false);
+
 
 
         slider=binding.slider;
@@ -192,6 +194,7 @@ public class MusicFragment extends Fragment {
             albumImage = args.getString("album_image");
             downloadUrl = args.getString("audiodownload");
 
+            ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle(name);
             title.setText(name + " - " + artist);
             Glide.with(getContext()).load(albumImage).into(album);
 

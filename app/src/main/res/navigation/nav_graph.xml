@@ -3,17 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
              android:id="@+id/nav_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/SongListFragment">
 
 
     <fragment
         android:id="@+id/musicFragment"
         android:name="com.example.musicapp.ui.MusicFragment"
         android:label="MusciFragment" />
-    <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.example.musicapp.ui.HomeFragment"
-        android:label="HomeFragment"/>
     <fragment
         android:id="@+id/SongListFragment"
         android:name="com.example.musicapp.ui.songlist.SongListFragment"
